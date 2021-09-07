@@ -26,6 +26,7 @@
 `docker build . -f ../../dockerfiles/Dockerfile_3 -t poi:latest`
 
 *Change directory to Trips: **/src/trips***
+
 `docker build . -f ../../dockerfiles/Dockerfile_4 -t trips:latest`
 
 # Run the containers
