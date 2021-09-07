@@ -29,6 +29,10 @@
 
 `docker build . -f ../../dockerfiles/Dockerfile_4 -t trips:latest`
 
+# Create the network
+
+`docker network create openhack`
+
 # Run the containers
 ## Java container
 `docker run --network openhack -e 'PORT=8080' -e 'SQL_USER=sa' -e 'SQL_PASSWORD=Pass@word123!!' -e 'SQL_SERVER=dbsrv' -p 8080:8080 --name java java:latest`
