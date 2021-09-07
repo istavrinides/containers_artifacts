@@ -48,3 +48,34 @@
 
 ## Trips container
 `docker run --network openhack -e 'PORT=8083' -e 'SQL_USER=sa' -e 'SQL_PASSWORD=Pass@word123!!' -e 'SQL_SERVER=dbsrv' -e 'OPENAPI_DOCS_URI=http://changeme' -p 8083:8083 --name trips trips:latest`
+
+# Push to Azure Container Registry
+
+## Login to Azure CLI
+`az login`
+
+## Login to Azure Container Registry
+`az acr login --name registryslg1438`
+
+## Tag all the container images
+`docker tag java:latest registryslg1438.azurecr.io/java:latest`
+
+`docker tag tripviewer:latest registryslg1438.azurecr.io/tripviewer:latest`
+
+`docker tag userprofile:latest registryslg1438.azurecr.io/userprofile:latest`
+
+`docker tag poi:latest registryslg1438.azurecr.io/poi:latest`
+
+`docker tag trips:latest registryslg1438.azurecr.io/trips:latest`
+
+## Push to ACR
+
+`docker push registryslg1438.azurecr.io/java:latest`
+
+`docker push registryslg1438.azurecr.io/tripviewer:latest`
+
+`docker push registryslg1438.azurecr.io/userprofile:latest`
+
+`docker push registryslg1438.azurecr.io/poi:latest`
+
+`docker push registryslg1438.azurecr.io/trips:latest`
