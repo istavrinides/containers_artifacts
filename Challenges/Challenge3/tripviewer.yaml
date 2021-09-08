@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tripviewer-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tripviewer
+  template:
+    metadata:
+      labels:
+        app: tripviewer
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: tripviewer
+        image: registryslg1438.azurecr.io/tripviewer:latest
+        imagePullPolicy: Always
+        env:
+        - name: TRIPS_API_ENDPOINT
+          value: http://trips.default.svc.cluster.local
+        - name: USERPROFILE_API_ENDPOINT
+          value: http://userprofile.default.svc.cluster.local
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tripviewer
+spec:
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    name: tripviewer-http
+    port: 80
+    targetPort: 80
+  - protocol: TCP
+    name: tripviewer-https
+    port: 443
+    targetPort: 443
+  selector:
+    app: tripviewer
