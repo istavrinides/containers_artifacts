@@ -22,7 +22,7 @@ spec:
         - name: WEB_SERVER_BASE_URI
           value: http://0.0.0.0
         - name: ASPNETCORE_ENVIRONMENT
-          value: Local
+          value: Development
         - name: PORT
           value: '80'
         resources:
