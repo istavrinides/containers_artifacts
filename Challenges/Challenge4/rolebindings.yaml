@@ -16,14 +16,14 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: web-edit
-  namespace: api
+  namespace: web
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
   name: web-edit
 subjects:
 - kind: Group
-  namespace: api
+  namespace: web
   name: e503d068-8f73-4b52-b720-f53b12bb8213
 ---
 kind: RoleBinding
