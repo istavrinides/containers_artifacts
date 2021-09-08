@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poi-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: poi
+  template:
+    metadata:
+      labels:
+        app: poi
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: poi
+        image: registryslg1438.azurecr.io/poi:latest
+        imagePullPolicy: Always
+        env:
+        - name: WEB_SERVER_BASE_URI
+          value: http://0.0.0.0
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Local
+        - name: PORT
+          value: '80'
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        - containerPort: 443
+          name: https
+          protocol: TCP
+        envFrom:
+          - secretRef:
+              name: sql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: poi
+spec:
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    name: poi-http
+    port: 80
+    targetPort: 80
+  - protocol: TCP
+    name: poi-https
+    port: 443
+    targetPort: 443
+  selector:
+    app: poi
