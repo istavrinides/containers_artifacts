@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  userprofile
+  namespace: api
+  labels:
+    app:  userprofile
+spec:
+  selector:
+    matchLabels:
+      app: userprofile
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  userprofile
+    spec:
+      # initContainers:
+        # Init containers are exactly like regular containers, except:
+          # - Init containers always run to completion.
+          # - Each init container must complete successfully before the next one starts.
+      containers:
+      - name:  userprofile
+        image: registryslg1438.azurecr.io/userprofile:latest
+        env:
+        - name: WEB_SERVER_BASE_URI
+          value: http://0.0.0.0
+        - name: PORT
+          value: '80'
+        ports:
+        - containerPort:  80
+          name:  userprofile
+        envFrom:
+          - secretRef:
+              name: sql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: userprofile
+  namespace: api
+spec:
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    name: poi-http
+    port: 80
+    targetPort: 80
+  - protocol: TCP
+    name: poi-https
+    port: 443
+    targetPort: 443
+  selector:
+    app: userprofile
