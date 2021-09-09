@@ -35,9 +35,18 @@ spec:
         ports:
         - containerPort:  80
           name:  userprofile
-        envFrom:
-          - secretRef:
-              name: sql
+        volumeMounts:
+        - name: secrets-store-inline
+          mountPath: "/secrets"
+          readOnly: true
+      volumes:
+      - name: secrets-store-inline
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "team8akskv"
+---
 ---
 apiVersion: v1
 kind: Service
