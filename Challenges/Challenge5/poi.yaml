@@ -4,7 +4,7 @@ metadata:
   name: poi-deploy
   namespace: api
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: poi
@@ -33,9 +33,17 @@ spec:
         - containerPort: 443
           name: https
           protocol: TCP
-        envFrom:
-          - secretRef:
-              name: sql
+        volumeMounts:
+        - name: secrets-store-inline
+          mountPath: "/secrets"
+          readOnly: true
+      volumes:
+      - name: secrets-store-inline
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "team8akskv"
 ---
 apiVersion: v1
 kind: Service
