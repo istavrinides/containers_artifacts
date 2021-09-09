@@ -1,45 +1,84 @@
-apiVersion: networking.k8s.io/v1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: ingress
+  namespace: api
   annotations:
     kubernetes.io/ingress.class: addon-http-application-routing
 spec:
   rules:
-  - http:
-      paths:
-      - path: /api/poi(/|$)(.*)
-        pathType: Prefix
+  - host: ad586806c2c84228a47b.ukwest.aksapp.io
+    http:
+      paths:      
+      - path: /api/poi
         backend:
-          service:
-            name: poi
-            port:
-              number: 80
-      - path: /api/user(/|$)(.*)
-        pathType: Prefix
+          serviceName: poi
+          servicePort: 80
+      - path: /api/healthcheck/poi
         backend:
-          service:
-            name: userprofile
-            port:
-              number: 80
-      - path: /api/user-java(/|$)(.*)
-        pathType: Prefix
+          serviceName: poi
+          servicePort: 80
+      - path: /api/docs/poi
         backend:
-          service:
-            name: user-java
-            port:
-              number: 80   
-      - path: /api/trips(/|$)(.*)
-        pathType: Prefix
+          serviceName: poi
+          servicePort: 80
+      - path: /swagger/docs/poi
         backend:
-          service:
-            name: trips
-            port:
-              number: 80   
-      - path: /(.*)
-        pathType: Prefix
+          serviceName: poi
+          servicePort: 80
+      - path: /api/trips
         backend:
-          service:
-            name: tripviewer
-            port:
-              number: 80
+          serviceName: trips
+          servicePort: 80
+      - path: /api/healthcheck/trips
+        backend:
+          serviceName: trips
+          servicePort: 80
+      - path: /api/docs/trips/
+        backend:
+          serviceName: trips
+          servicePort: 80
+      - path: /api/docs/trips
+        backend:
+          serviceName: trips
+          servicePort: 80
+      - path: /api/json
+        backend:
+          serviceName: trips
+          servicePort: 80
+      - path: /api/user
+        backend:
+          serviceName: userprofile
+          servicePort: 80
+      - path: /api/docs/user
+        backend:
+          serviceName: userprofile
+          servicePort: 80
+      - path: /api/healthcheck/user
+        backend:
+          serviceName: userprofile
+          servicePort: 80
+      - path: /api/user-java
+        backend:
+          serviceName: user-java
+          servicePort: 80
+      - path: /api/healthcheck/user-java
+        backend:
+          serviceName: user-java
+          servicePort: 80
+      - path: /api/documentation/user-java
+        backend:
+          serviceName: user-java
+          servicePort: 80
+      - path: /api/docs/user-java
+        backend:
+          serviceName: user-java
+          servicePort: 80
+      - path: /api/swagger-resources
+        backend:
+          serviceName: user-java
+          servicePort: 80
+      - path: /api/api-docs
+        backend:
+          serviceName: user-java
+          servicePort: 80
