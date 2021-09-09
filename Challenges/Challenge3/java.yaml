@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  user-java-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-java  
+  template:
+    metadata:
+      labels:
+        app: user-java
+    spec:    
+      containers:
+      - name:  user-java
+        image:  registryslg1438.azurecr.io/java:latest
+        imagePullPolicy: Always               
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        - containerPort: 443
+          name: https
+          protocol: TCP
+        envFrom:
+          - secretRef:
+              name: sql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-java
+spec:
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    name: user-java-http
+    port: 80
+    targetPort: 80
+  - protocol: TCP
+    name: user-java-https
+    port: 443
+    targetPort: 443
+  selector:
+    app: user-java
