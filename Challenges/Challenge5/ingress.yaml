@@ -1,0 +1,45 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /api/poi(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: poi
+            port:
+              number: 80
+      - path: /api/user(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: userprofile
+            port:
+              number: 80
+      - path: /api/user-java(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: user-java
+            port:
+              number: 80   
+      - path: /api/trips(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: trips
+            port:
+              number: 80   
+      - path: /(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: tripviewer
+            port:
+              number: 80
