@@ -12,7 +12,9 @@ spec:
     metadata:
       labels:
         app: user-java
-    spec:    
+    spec:  
+      nodeSelector:
+        "kubernetes.io/os": linux      
       containers:
       - name:  user-java
         image:  registryslg1438.azurecr.io/java:latest
